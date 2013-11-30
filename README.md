@@ -6,12 +6,13 @@ MMD4Mecanim LipSync Plugin
 MMD4Mecanim を適用したモデルにアタッチすることで以下の機能を実現するプラグインです。
 - WAVE データの音声に同期したリップシンク
 - 入力した日本語をリップシンクしながら発話
-- マイク入力に対応してリアルタイムにリップシンク
+
 
 動作環境
 --------
 - Mac OS X 10.9
 - Unity 4.3.0f4
+	- 非 Pro 版でも動作します。
 
 使用しているソフトウェア・ライブラリ
 ------------------------------------
@@ -21,6 +22,9 @@ MMD4Mecanim を適用したモデルにアタッチすることで以下の機�
 - Mei (Voice Data Only)
 	- http://sourceforge.net/projects/mmdagent/
 	- 音声合成の声として利用しています。
+- nkf
+	- http://www.vector.co.jp/soft/win95/util/se295331.html
+	- Windows で UTF-8 <-> SJIS の文字コード変換に利用しています。
 
 利用方法
 --------

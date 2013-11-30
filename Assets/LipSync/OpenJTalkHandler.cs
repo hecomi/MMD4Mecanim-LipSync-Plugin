@@ -8,18 +8,26 @@ public class OpenJTalkHandler : MonoBehaviour {
 	private static bool Finalized   = false;
 
 	#region [ OpenJTalk-related File Paths ]
-	private static readonly string OpenJTalkBin      = "OpenJTalk/open_jtalk";
-	private static readonly string OpenJTalkDic      = "OpenJTalk/dic";
+	private static readonly string NkfBin            = "OpenJTalk/nkf.exe";
+	private static readonly string OpenJTalkBinWin   = "OpenJTalk/open_jtalk.exe";
+	private static readonly string OpenJTalkBinMac   = "OpenJTalk/open_jtalk";
+	private static readonly string OpenJTalkDicWin   = "OpenJTalk/dic/win";
+	private static readonly string OpenJTalkDicMac   = "OpenJTalk/dic/mac";
 	private static readonly string OpenJTalkHTSVoice = "OpenJTalk/voice/mei_normal/mei_normal.htsvoice";
 	private static readonly string OpenJTalkTmpDir   = "OpenJTalk/tmp";
 	#endregion
 
 	#region [ Setters and Getters ]
+	private static string NkfBinPath_;
 	private static string OpenJTalkBinPath_;
 	private static string OpenJTalkDicPath_;
 	private static string OpenJTalkHTSVoicePath_;
 	private static string OpenJTalkTmpDirPath_;
 
+	public static string NkfBinPath {
+		get { return NkfBinPath_; }
+		private set { NkfBinPath_ = value; }
+	}
 	public static string OpenJTalkBinPath {
 		get { return OpenJTalkBinPath_; }
 		private set { OpenJTalkBinPath_ = value; }
@@ -54,9 +62,22 @@ public class OpenJTalkHandler : MonoBehaviour {
 	void Start()
 	{
 		if (!Initialized) {
+			// Add .exe on Windows
+			// and switch dic file between win and mac
+			string bin, dic;
+			if (Application.platform == RuntimePlatform.WindowsEditor ||
+			    Application.platform == RuntimePlatform.WindowsPlayer) {
+				bin = OpenJTalkBinWin;
+				dic = OpenJTalkDicWin;
+			} else {
+				bin = OpenJTalkBinMac;
+				dic = OpenJTalkDicMac;
+			}
+
 			// Set file path
-			OpenJTalkBinPath      = Path.Combine(Application.streamingAssetsPath, OpenJTalkBin);
-			OpenJTalkDicPath      = Path.Combine(Application.streamingAssetsPath, OpenJTalkDic);
+			NkfBinPath            = Path.Combine(Application.streamingAssetsPath, NkfBin);
+			OpenJTalkBinPath      = Path.Combine(Application.streamingAssetsPath, bin);
+			OpenJTalkDicPath      = Path.Combine(Application.streamingAssetsPath, dic);
 			OpenJTalkHTSVoicePath = Path.Combine(Application.streamingAssetsPath, OpenJTalkHTSVoice);
 			OpenJTalkTmpDirPath   = Path.Combine(Application.streamingAssetsPath, OpenJTalkTmpDir);
 
@@ -99,12 +120,25 @@ public class OpenJTalkHandler : MonoBehaviour {
 			FileName = System.Guid.NewGuid().ToString().ToLower();
 
 			// Output text file input to OpenJTalk
-			var writer = new StreamWriter(OutputTxtPath, false);
+			StreamWriter writer;
+			writer = new StreamWriter(OutputTxtPath, false);
 			writer.Write(word);
 			writer.Close();
 
+			// Change encoding from UTF-8 to SJIS on Windows
+			if (Application.platform == RuntimePlatform.WindowsEditor ||
+			    Application.platform == RuntimePlatform.WindowsPlayer) {
+				var nkf = new System.Diagnostics.Process();
+				nkf.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+				nkf.StartInfo.FileName = NkfBinPath;
+				nkf.StartInfo.Arguments = "-s --overwrite " + OutputTxtPath;
+				nkf.Start();
+				nkf.WaitForExit();
+			}
+
 			// Create child process and set OpneJTalk command
 			process_ = new System.Diagnostics.Process();
+			process_.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 			process_.StartInfo.FileName = OpenJTalkBinPath;
 			process_.StartInfo.Arguments = " -m "  + OpenJTalkHTSVoicePath +
 										   " -x "  + OpenJTalkDicPath +

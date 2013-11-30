@@ -132,9 +132,9 @@ public class MMD4M_LipSync : MonoBehaviour {
 		// 	if (!isTalking_) Play(audioPath);
 		// }
 		//
-		// if (Input.GetKeyDown(KeyCode.A)) {
-		// 	Talk(word);
-		// }
+		if (Input.GetKeyDown(KeyCode.A)) {
+			Talk(word);
+		}
 
 		if (isNewWavCreated_) {
 			isNewWavCreated_ = false;

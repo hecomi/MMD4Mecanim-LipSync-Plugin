@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-public class LipSyncHandler : MonoBehaviour {
+public class MMD4M_LipSync : MonoBehaviour {
 	#region [ Constants ]
 	public enum Vowel {
 		A, I, U, E, O
 	}
+	#endregion
+
+	#region [ Playing Position ]
+	public GameObject playingPosition;
 	#endregion
 
 	#region [ Target Audio and Word ]
@@ -76,7 +80,6 @@ public class LipSyncHandler : MonoBehaviour {
 	#endregion
 
 	#region [ MMD4Mecanim Settings ]
-	private MMD4MecanimModel         model_  = null;
 	private MMD4MecanimMorphHelper[] morphs_ = null;
 	public  string[] morphNames     = { "あ", "い", "う", "え", "お" };
 	public  float    morphSpeed     = 0.15f;
@@ -104,10 +107,9 @@ public class LipSyncHandler : MonoBehaviour {
 
 	#region [ Member Functions ]
 	void Start() {
-		model_ = GetComponent<MMD4MecanimModel>();
 		morphs_ = new MMD4MecanimMorphHelper[morphNames.Length];
 		for (int i = 0; i < morphNames.Length; ++i) {
-			morphs_[i] = model_.gameObject.AddComponent<MMD4MecanimMorphHelper>();
+			morphs_[i] = gameObject.AddComponent<MMD4MecanimMorphHelper>();
 			morphs_[i].morphSpeed = morphSpeed;
 			morphs_[i].morphName  = morphNames[i];
 		}
@@ -119,7 +121,7 @@ public class LipSyncHandler : MonoBehaviour {
 		OpenJTalk = ojt.AddComponent<OpenJTalkHandler>();
 
 		// Add MicHandler component
-		mic_ = model_.gameObject.AddComponent<MicHandler>();
+		mic_ = gameObject.AddComponent<MicHandler>();
 		mic_.Initialize(sampleNum);
 	}
 
@@ -307,7 +309,8 @@ public class LipSyncHandler : MonoBehaviour {
 		playClip_ = AudioClip.Create("tmp", samples_, clip.channels, clip.frequency,
 			true, true, OnAudioRead, OnAudioSetPosition);
 		// TODO: move playing position to mouth position
-		AudioSource.PlayClipAtPoint(playClip_, transform.position);
+		var pos = (playingPosition) ? playingPosition.transform.position : transform.position;
+		AudioSource.PlayClipAtPoint(playClip_, pos);
 	}
 
 

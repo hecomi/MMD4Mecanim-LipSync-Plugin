@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(LipSyncHandler))]
-public sealed class LipSyncEditor : Editor
+[CustomEditor(typeof(MMD4M_LipSync))]
+public sealed class MMD4M_LipSyncEditor : Editor
 {
 	#region [ Fold Out Flags ]
 	private bool micFoldOut_          = true;
@@ -29,7 +29,7 @@ public sealed class LipSyncEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		// Get target instance
-		var lipSync = target as LipSyncHandler;
+		var lipSync = target as MMD4M_LipSync;
 
 		// Use Mic.
 		// --------------------------------------------------------------------------------
@@ -121,6 +121,17 @@ public sealed class LipSyncEditor : Editor
 			} EditorGUILayout.EndHorizontal();
 			EditorGUI.indentLevel--;
 
+			// Playing Position
+			EditorGUILayout.BeginHorizontal(); {
+				EditorGUILayout.LabelField("Playing Position");
+				GUILayout.FlexibleSpace();
+			} EditorGUILayout.EndHorizontal();
+
+			EditorGUI.indentLevel++;
+			var playingPosition = EditorGUILayout.ObjectField("", lipSync.playingPosition, typeof(GameObject), true) as GameObject;
+			if (playingPosition != lipSync.playingPosition) lipSync.playingPosition = playingPosition;
+			EditorGUI.indentLevel--;
+
 			EditorGUILayout.Separator();
 
 			// Stop
@@ -182,11 +193,11 @@ public sealed class LipSyncEditor : Editor
 
 			EditorGUILayout.Separator();
 			if ( GUILayout.Button("Callibration", EditorStyles.miniButton) ) {
-				if (aClip != null) lipSync.Callibration(aClip, LipSyncHandler.Vowel.A);
-				if (iClip != null) lipSync.Callibration(iClip, LipSyncHandler.Vowel.I);
-				if (uClip != null) lipSync.Callibration(uClip, LipSyncHandler.Vowel.U);
-				if (eClip != null) lipSync.Callibration(eClip, LipSyncHandler.Vowel.E);
-				if (oClip != null) lipSync.Callibration(oClip, LipSyncHandler.Vowel.O);
+				if (aClip != null) lipSync.Callibration(aClip, MMD4M_LipSync.Vowel.A);
+				if (iClip != null) lipSync.Callibration(iClip, MMD4M_LipSync.Vowel.I);
+				if (uClip != null) lipSync.Callibration(uClip, MMD4M_LipSync.Vowel.U);
+				if (eClip != null) lipSync.Callibration(eClip, MMD4M_LipSync.Vowel.E);
+				if (oClip != null) lipSync.Callibration(oClip, MMD4M_LipSync.Vowel.O);
 			}
 			EditorGUILayout.Separator();
 
@@ -250,16 +261,16 @@ public sealed class LipSyncEditor : Editor
 				EditorGUILayout.BeginHorizontal(); {
 					GUILayout.FlexibleSpace();
 					if (GUILayout.Button("Use default", EditorStyles.miniButton)) {
-						lipSync.aCenterF1 = LipSyncHandler.aCenterMeiF1;
-						lipSync.aCenterF2 = LipSyncHandler.aCenterMeiF2;
-						lipSync.iCenterF1 = LipSyncHandler.iCenterMeiF1;
-						lipSync.iCenterF2 = LipSyncHandler.iCenterMeiF2;
-						lipSync.uCenterF1 = LipSyncHandler.uCenterMeiF1;
-						lipSync.uCenterF2 = LipSyncHandler.uCenterMeiF2;
-						lipSync.eCenterF1 = LipSyncHandler.eCenterMeiF1;
-						lipSync.eCenterF2 = LipSyncHandler.eCenterMeiF2;
-						lipSync.oCenterF1 = LipSyncHandler.oCenterMeiF1;
-						lipSync.oCenterF2 = LipSyncHandler.oCenterMeiF2;
+						lipSync.aCenterF1 = MMD4M_LipSync.aCenterMeiF1;
+						lipSync.aCenterF2 = MMD4M_LipSync.aCenterMeiF2;
+						lipSync.iCenterF1 = MMD4M_LipSync.iCenterMeiF1;
+						lipSync.iCenterF2 = MMD4M_LipSync.iCenterMeiF2;
+						lipSync.uCenterF1 = MMD4M_LipSync.uCenterMeiF1;
+						lipSync.uCenterF2 = MMD4M_LipSync.uCenterMeiF2;
+						lipSync.eCenterF1 = MMD4M_LipSync.eCenterMeiF1;
+						lipSync.eCenterF2 = MMD4M_LipSync.eCenterMeiF2;
+						lipSync.oCenterF1 = MMD4M_LipSync.oCenterMeiF1;
+						lipSync.oCenterF2 = MMD4M_LipSync.oCenterMeiF2;
 					}
 				} EditorGUILayout.EndHorizontal();
 				EditorGUILayout.Separator();
@@ -340,7 +351,7 @@ public sealed class LipSyncEditor : Editor
 
 	void CreateRecordAndStopButton(ref AudioClip clip, string clipName)
 	{
-		var lipSync = target as LipSyncHandler;
+		var lipSync = target as MMD4M_LipSync;
 		if (GUILayout.Button("Record", EditorStyles.miniButtonLeft)) {
 			if (!micHelper_) {
 				if (lipSync.useMic) {

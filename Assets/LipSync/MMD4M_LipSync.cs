@@ -81,6 +81,9 @@ public class MMD4M_LipSync : MonoBehaviour {
 
 	#region [ MMD4Mecanim Settings ]
 	private MMD4MecanimMorphHelper[] morphs_ = null;
+	public  MMD4MecanimMorphHelper[] morphHelpers  {
+		get { return morphs_; }
+	}
 	public  string[] morphNames     = { "あ", "い", "う", "え", "お" };
 	public  float    morphSpeed     = 0.1f;
 	public  float    maxMorphWeight = 1.2f;
@@ -106,7 +109,8 @@ public class MMD4M_LipSync : MonoBehaviour {
 
 
 	#region [ Member Functions ]
-	void Start() {
+	void Start()
+	{
 		morphs_ = new MMD4MecanimMorphHelper[morphNames.Length];
 		for (int i = 0; i < morphNames.Length; ++i) {
 			morphs_[i] = gameObject.AddComponent<MMD4MecanimMorphHelper>();

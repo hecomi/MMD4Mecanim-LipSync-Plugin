@@ -288,7 +288,14 @@ public sealed class MMD4M_LipSyncEditor : Editor
 
 			// Morph Speed
 			float morphSpeed = EditorGUILayout.FloatField("Morph Speed", lipSync.morphSpeed);
-			if (morphSpeed != lipSync.morphSpeed) lipSync.morphSpeed = morphSpeed;
+			if (morphSpeed != lipSync.morphSpeed) {
+				lipSync.morphSpeed = morphSpeed;
+				if (Application.isPlaying) {
+					foreach (MMD4MecanimMorphHelper morph in lipSync.morphHelpers) {
+						morph.morphSpeed = morphSpeed;
+					}
+				}
+			}
 
 			// Max Morph Weight
 			float maxMorphWeight = EditorGUILayout.FloatField("Max Morph Weight", lipSync.maxMorphWeight);

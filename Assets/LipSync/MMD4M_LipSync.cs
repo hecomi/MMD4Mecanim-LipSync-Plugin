@@ -24,16 +24,16 @@ public class MMD4M_LipSync : MonoBehaviour {
 	public int sampleNum = 376;
 
 	// Typical formant frequencies for each vowel (for mei talking)
-	static readonly public float aCenterMeiF1 = 1000;
-	static readonly public float aCenterMeiF2 = 1800;
-	static readonly public float iCenterMeiF1 = 300;
-	static readonly public float iCenterMeiF2 = 3000;
-	static readonly public float uCenterMeiF1 = 400;
-	static readonly public float uCenterMeiF2 = 1800;
-	static readonly public float eCenterMeiF1 = 500;
-	static readonly public float eCenterMeiF2 = 2500;
-	static readonly public float oCenterMeiF1 = 500;
-	static readonly public float oCenterMeiF2 = 900;
+	static readonly public float aCenterMeiF1 = 853;
+	static readonly public float aCenterMeiF2 = 2183;
+	static readonly public float iCenterMeiF1 = 416;
+	static readonly public float iCenterMeiF2 = 2656;
+	static readonly public float uCenterMeiF1 = 423;
+	static readonly public float uCenterMeiF2 = 2078;
+	static readonly public float eCenterMeiF1 = 550;
+	static readonly public float eCenterMeiF2 = 2053;
+	static readonly public float oCenterMeiF1 = 696;
+	static readonly public float oCenterMeiF2 = 3660;
 
 	// Typical formant frequencies for each vowel
 	public float aCenterF1 = aCenterMeiF1;
@@ -73,17 +73,17 @@ public class MMD4M_LipSync : MonoBehaviour {
 	private Queue<float>  volumes_ = new Queue<float>();
 	private Queue<string> vowels_  = new Queue<string>();
 	private Queue<int>    lengths_ = new Queue<int>();
-	public  float minVolume        = 1e-4f;
-	public  float normalizedVolume = 1e-2f;
-	public  float delayTime        = 0.2f;
+	public  float minVolume        = 1e-5f;
+	public  float normalizedVolume = 1e-4f;
+	public  float delayTime        = 0.18f;
 	private int   delayCnt_        = 0;
 	#endregion
 
 	#region [ MMD4Mecanim Settings ]
 	private MMD4MecanimMorphHelper[] morphs_ = null;
 	public  string[] morphNames     = { "あ", "い", "う", "え", "お" };
-	public  float    morphSpeed     = 0.15f;
-	public  float    maxMorphWeight = 1.5f;
+	public  float    morphSpeed     = 0.1f;
+	public  float    maxMorphWeight = 1.2f;
 	#endregion
 
 	#region [ OpenJTalk ]

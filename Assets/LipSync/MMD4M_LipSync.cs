@@ -128,14 +128,6 @@ public class MMD4M_LipSync : MonoBehaviour {
 
 	void Update()
 	{
-		// if (Input.GetKeyDown(KeyCode.Space)) {
-		// 	if (!isTalking_) Play(audioPath);
-		// }
-		//
-		if (Input.GetKeyDown(KeyCode.A)) {
-			Talk(word);
-		}
-
 		if (isNewWavCreated_) {
 			isNewWavCreated_ = false;
 			StartCoroutine( LoadAudioClipFromPath(wavPath_) );
@@ -226,7 +218,11 @@ public class MMD4M_LipSync : MonoBehaviour {
 			return;
 		}
 
-		OpenJTalk.CreateWavFromWord(word, (string wavPath) => {
+		OpenJTalk.CreateWavFromWord(word, (string err, string wavPath) => {
+			if (err != "") {
+				Debug.LogError(err);
+				return;
+			}
 			wavPath_ = wavPath;
 			// start coroutine from main thread (inner 'Update')
 			isNewWavCreated_ = true;
@@ -308,7 +304,6 @@ public class MMD4M_LipSync : MonoBehaviour {
 
 		playClip_ = AudioClip.Create("tmp", samples_, clip.channels, clip.frequency,
 			true, true, OnAudioRead, OnAudioSetPosition);
-		// TODO: move playing position to mouth position
 		var pos = (playingPosition) ? playingPosition.transform.position : transform.position;
 		AudioSource.PlayClipAtPoint(playClip_, pos);
 	}

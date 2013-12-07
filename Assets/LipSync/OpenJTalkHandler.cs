@@ -55,7 +55,7 @@ public class OpenJTalkHandler : MonoBehaviour {
 	#region [ Other static members ]
 	static private string FileName = "__has_not_set_yet__";
 	static private System.Diagnostics.Process process_;
-	static private Action<string> callback_;
+	static private Action<string, string> callback_;
 	#endregion
 
 
@@ -110,7 +110,7 @@ public class OpenJTalkHandler : MonoBehaviour {
 	}
 
 
-	public void CreateWavFromWord(string word, Action<string> callback)
+	public void CreateWavFromWord(string word, Action<string, string> callback)
 	{
 		try {
 			// Set callabck
@@ -157,6 +157,10 @@ public class OpenJTalkHandler : MonoBehaviour {
 
 	void OnWavCreated(object sender, System.EventArgs e)
 	{
-		callback_(OutputWavPath);
+		if (process_.ExitCode != 0) {
+			callback_("Error! Exit Code: " + process_.ExitCode, OutputWavPath);
+		} else {
+			callback_("", OutputWavPath);
+		}
 	}
 }

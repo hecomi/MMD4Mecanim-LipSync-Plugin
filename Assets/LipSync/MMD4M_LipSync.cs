@@ -15,8 +15,9 @@ public class MMD4M_LipSync : MonoBehaviour {
 	#endregion
 
 	#region [ Target Audio and Word ]
-	public string audioPath;
-	public string word = "これは、オーディオファイル、または、OpenJTalkによる音声合成した声を再生し、それに併せてリップシンクを行うスクリプトです！";
+	public string    audioPath;
+	public string    word = "これは、オーディオファイル、または、OpenJTalkによる音声合成した声を再生し、それに併せてリップシンクを行うスクリプトです！";
+	public AudioClip audioClip;
 	#endregion
 
 	#region [ LPC Parameters ]
@@ -331,10 +332,10 @@ public class MMD4M_LipSync : MonoBehaviour {
 
 	public void Play()
 	{
-		if (audioPath != "") {
-			Play(audioPath);
+		if (audioClip) {
+			Play(audioClip);
 		} else {
-			Debug.LogWarning("No audio path is set");
+			Debug.LogWarning("No audio clips is set");
 		}
 	}
 

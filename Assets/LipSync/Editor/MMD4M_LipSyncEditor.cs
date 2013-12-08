@@ -16,12 +16,7 @@ public sealed class MMD4M_LipSyncEditor : Editor
 	#endregion
 
 	#region [ Callibration for Vowel by Mic ]
-	private GameObject  micHelper_;
-	private AudioClip[] vowelClips_ = new AudioClip[5];
-	#endregion
-
-	#region [ Temporary variables ]
-	private AudioClip testClip_;
+	private GameObject micHelper_;
 	#endregion
 
 
@@ -89,7 +84,7 @@ public sealed class MMD4M_LipSyncEditor : Editor
 				}
 				if (GUILayout.Button("Play", EditorStyles.miniButtonRight)) {
 					if (Application.isPlaying) {
-						lipSync.Play();
+						lipSync.Play(audioPath);
 					} else {
 						Debug.LogWarning("Not running.");
 					}
@@ -101,18 +96,19 @@ public sealed class MMD4M_LipSyncEditor : Editor
 			// --------------------------------------------------------------------------------
 			// Label
 			EditorGUILayout.BeginHorizontal(); {
-				EditorGUILayout.LabelField("Audio Clip (for Test)");
+				EditorGUILayout.LabelField("Audio Clip");
 				GUILayout.FlexibleSpace();
 			} EditorGUILayout.EndHorizontal();
 
 			// Filed and button
 			EditorGUI.indentLevel++;
 			EditorGUILayout.BeginHorizontal(); {
-				testClip_ = EditorGUILayout.ObjectField("", testClip_, typeof(AudioClip), false) as AudioClip;
+				var audioClip = EditorGUILayout.ObjectField("", lipSync.audioClip, typeof(AudioClip), false) as AudioClip;
+				if (audioClip != lipSync.audioClip) lipSync.audioClip = audioClip;
 				if (GUILayout.Button("Play", EditorStyles.miniButton)) {
 					if (Application.isPlaying) {
-						if (testClip_ != null) {
-							lipSync.Play(testClip_);
+						if (audioClip != null) {
+							lipSync.Play(audioClip);
 						}
 					} else {
 						Debug.LogWarning("Not running.");

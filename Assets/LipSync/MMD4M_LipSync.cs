@@ -497,7 +497,7 @@ public class MMD4M_LipSync : MonoBehaviour {
 		// Identify the first and the second formant frequency
 		bool foundFirst = false;
 		int f1 = 0, f2 = 0;
-		for (int i = 1; i < N; ++i) {
+		for (int i = 1; i < N - 1; ++i) {
 			if (H[i] > H[i-1] && H[i] > H[i+1]) {
 				if (!foundFirst) {
 					f1 = i;

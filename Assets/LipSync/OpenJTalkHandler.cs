@@ -146,8 +146,8 @@ public class OpenJTalkHandler : MonoBehaviour {
 										   " "     + OutputTxtPath;
 
 			// Set callback and start
-			process_.Exited += OnWavCreated;
 			process_.EnableRaisingEvents = true;
+			process_.Exited += OnWavCreated;
 			process_.Start();
 		} catch(System.Exception e) {
 			Debug.LogError("Exception occured: " + e.Message);

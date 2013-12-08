@@ -26,11 +26,6 @@ public class MicHandler : MonoBehaviour {
 		get { return audio.clip; }
 	}
 
-	void Start()
-	{
-		Debug.Log(Microphone.devices[0]);
-	}
-
 	void Update()
 	{
 		if (!audio.isPlaying && initialized_ && recording_) {
@@ -53,8 +48,10 @@ public class MicHandler : MonoBehaviour {
 
 		// Check if microphone exists
 		if (Microphone.devices.Length <= 0) {
-			Debug.LogError("Microphone not connected!");
+			Debug.LogWarning("Microphone not connected!");
 			return;
+		} else {
+			Debug.Log("Use:" + Microphone.devices[0]);
 		}
 
 		// Get default microphone min/max frequencies

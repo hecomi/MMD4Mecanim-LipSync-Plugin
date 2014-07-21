@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 
-public class MMD4M_LipSync : MonoBehaviour {
+[RequireComponent( typeof(UnityChanMorph) )]
+public class UnityChanLipSync : MonoBehaviour {
 	#region [ Constants ]
 	public enum Vowel {
 		A, I, U, E, O
@@ -37,6 +39,20 @@ public class MMD4M_LipSync : MonoBehaviour {
 	static readonly public float eCenterMeiF2 = 2053;
 	static readonly public float oCenterMeiF1 = 696;
 	static readonly public float oCenterMeiF2 = 3660;
+
+	// Typical formant frequencies for each vowel (for unitychan talking)
+	static readonly public int   unityChanLpcOrder  = 32;
+	static readonly public int   unityChanSampleNum = 376;
+	static readonly public float aCenterUnityChanF1 = 1205;
+	static readonly public float aCenterUnityChanF2 = 1840;
+	static readonly public float iCenterUnityChanF1 = 792;
+	static readonly public float iCenterUnityChanF2 = 3296;
+	static readonly public float uCenterUnityChanF1 = 516;
+	static readonly public float uCenterUnityChanF2 = 2067;
+	static readonly public float eCenterUnityChanF1 = 820;
+	static readonly public float eCenterUnityChanF2 = 2684;
+	static readonly public float oCenterUnityChanF1 = 885;
+	static readonly public float oCenterUnityChanF2 = 1796;
 
 	// Typical formant frequencies for each vowel
 	public float aCenterF1 = aCenterMeiF1;
@@ -84,8 +100,8 @@ public class MMD4M_LipSync : MonoBehaviour {
 	#endregion
 
 	#region [ MMD4Mecanim Settings ]
-	private MMD4MecanimMorphHelper[] morphs_ = null;
-	public  MMD4MecanimMorphHelper[] morphHelpers  {
+	private UnityChanLipSyncMorphHelper[] morphs_ = null;
+	public  UnityChanLipSyncMorphHelper[] morphHelpers {
 		get { return morphs_; }
 	}
 	public  string[] morphNames     = { "あ", "い", "う", "え", "お" };
@@ -115,9 +131,9 @@ public class MMD4M_LipSync : MonoBehaviour {
 	#region [ Member Functions ]
 	void Start()
 	{
-		morphs_ = new MMD4MecanimMorphHelper[morphNames.Length];
+		morphs_ = new UnityChanLipSyncMorphHelper[morphNames.Length];
 		for (int i = 0; i < morphNames.Length; ++i) {
-			morphs_[i] = gameObject.AddComponent<MMD4MecanimMorphHelper>();
+			morphs_[i] = gameObject.AddComponent<UnityChanLipSyncMorphHelper>();
 			morphs_[i].morphSpeed = morphSpeed;
 			morphs_[i].morphName  = morphNames[i];
 		}
@@ -314,7 +330,7 @@ public class MMD4M_LipSync : MonoBehaviour {
 		samples_         = clip.samples;
 		df_              = (float)clip.frequency / sampleNum;
 		updateMouthTime_ = (float)clip.length * sampleNum / samples_;
-		delayCnt_        = (int)(delayTime / updateMouthTime_); // delay
+		delayCnt_        = (int)(delayTime / updateMouthTime_);
 
 		rawData_  = new float[samples_ * clip.channels];
 		clip.GetData(rawData_, 0);
@@ -397,6 +413,11 @@ public class MMD4M_LipSync : MonoBehaviour {
 
 		// End
 		if (position_ >= samples_) {
+			// fade out voice
+			for (int i = 0; i < data.Length; ++i) {
+				data[i] *= (float)(data.Length - i) / data.Length;
+			}
+
 			if (DEBUG) Debug.Log("finish");
 			isTalking_ = false;
 		}

@@ -324,6 +324,10 @@ public sealed class MMD4M_LipSyncEditor : Editor
 				EditorGUI.indentLevel--;
 			}
 
+			// Morph Weight Dumping
+			float morphDumping = EditorGUILayout.FloatField("Morph Dumping", lipSync.morphDumping);
+			if (morphDumping != lipSync.morphDumping) lipSync.morphDumping = morphDumping;
+
 			EditorGUI.indentLevel--;
 		}
 

@@ -91,6 +91,7 @@ public class MMD4M_LipSync : MonoBehaviour {
 	public  string[] morphNames     = { "あ", "い", "う", "え", "お" };
 	public  float    morphSpeed     = 0.1f;
 	public  float    maxMorphWeight = 1.2f;
+	public  float    morphDumping   = 0.7f;
 	#endregion
 
 	#region [ OpenJTalk ]
@@ -201,7 +202,7 @@ public class MMD4M_LipSync : MonoBehaviour {
 					if (DEBUG) Debug.Log (weight);
 					morphs_[i].morphWeight = weight;
 				} else {
-					morphs_[i].morphWeight = 0;
+					morphs_[i].morphWeight *= morphDumping;
 				}
 			}
 			if (DEBUG) Debug.Log(vowel);

@@ -324,6 +324,10 @@ public sealed class MMD4M_LipSyncEditor : Editor
 				EditorGUI.indentLevel--;
 			}
 
+			// Morph Weight Damping Rate
+			float morphDampingRate = EditorGUILayout.FloatField("Morph Damping Rate", lipSync.morphDampingRate);
+			if (morphDampingRate != lipSync.morphDampingRate) lipSync.morphDampingRate = morphDampingRate;
+
 			EditorGUI.indentLevel--;
 		}
 

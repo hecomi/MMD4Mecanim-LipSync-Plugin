@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class LipSyncCore : MonoBehaviour
+public class LipSyncCore : MonoBehaviour
 {
     #region [ Constants ]
     public enum Vowel { A, I, U, E, O }
@@ -18,6 +18,7 @@ public abstract class LipSyncCore : MonoBehaviour
 
     #region [ Playing Position ]
     public GameObject playingPosition;
+    private bool isPlayingPositionSet_ = false;
     #endregion
 
     #region [ Target Audio and Word ]
@@ -115,10 +116,6 @@ public abstract class LipSyncCore : MonoBehaviour
     private string log_ = "";
     #endregion
 
-    #region [ Abstract Members ]
-    protected abstract void Initialize();
-    #endregion
-
     #region [ Event Listeners ]
     public delegate void TalkStartEventListener();
     public delegate void TalkUpdateEventListener(string vowel, float volume);
@@ -134,6 +131,11 @@ public abstract class LipSyncCore : MonoBehaviour
         // Add audio source
         if (playingPosition) {
             audio_ = playingPosition.AddComponent<AudioSource>();
+#if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
+            var passThrough = playingPosition.AddComponent<AudioFilterReadPassThrough>();
+            passThrough.AudioFilterRead += OnAudioFilterReadImpl;
+            isPlayingPositionSet_ = true;
+#endif
         } else {
             audio_ = gameObject.AddComponent<AudioSource>();
         }
@@ -147,10 +149,13 @@ public abstract class LipSyncCore : MonoBehaviour
         mic_ = gameObject.AddComponent<MicHandler>();
         mic_.Initialize(sampleNum);
 
-        // Initialize in subclass
         Initialize();
     }
 
+    protected virtual void Initialize()
+    {
+        // Implemented by sub class       
+    }
 
     void Update()
     {
@@ -371,7 +376,7 @@ public abstract class LipSyncCore : MonoBehaviour
 
 
 #if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
-    void OnAudioFilterRead(float[] data, int channels)
+    void OnAudioFilterReadImpl(float[] data, int channels)
     {
         if (!isTalking_) return;
 
@@ -400,6 +405,16 @@ public abstract class LipSyncCore : MonoBehaviour
 
             Log("finish");
             isTalking_ = false;
+        }
+    }
+
+
+    void OnAudioFilterRead(float[] data, int channels)
+    {
+        // NOTE: If playingPosition is set, OnAudioFilterRead in AudioFilterReadPassThrough 
+        // will be called instead of this.
+        if (!isPlayingPositionSet_) {
+            OnAudioFilterReadImpl(data, channels);
         }
     }
 #else

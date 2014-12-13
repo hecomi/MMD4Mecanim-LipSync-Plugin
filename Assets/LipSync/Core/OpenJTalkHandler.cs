@@ -114,7 +114,6 @@ public class OpenJTalkHandler : MonoBehaviour {
 			FileName = System.Guid.NewGuid().ToString().ToLower();
 
 			// Output text file input to OpenJTalk
-			StreamWriter writer;
 			if (Application.platform == RuntimePlatform.WindowsEditor ||
 			    Application.platform == RuntimePlatform.WindowsPlayer) {
 				File.WriteAllText(OutputTxtPath, word, Encoding.GetEncoding("shift_jis"));

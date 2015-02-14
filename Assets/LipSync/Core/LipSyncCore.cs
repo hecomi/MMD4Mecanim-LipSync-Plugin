@@ -1,4 +1,4 @@
-﻿//#define USE_PRO_FUNCTION 
+﻿#define USE_PRO_FUNCTION
 //#define OUTPUT_DEBUG_LOG
 
 using UnityEngine;
@@ -101,7 +101,7 @@ public abstract class LipSyncCore : MonoBehaviour
     #region [ OpenJTalk ]
     private static OpenJTalkHandler openjtalk_ = null;
     private static OpenJTalkHandler openjtalk {
-		get { return openjtalk_ ?? 
+		get { return openjtalk_ ??
 			(openjtalk_ = new GameObject("Open JTalk Handler").AddComponent<OpenJTalkHandler>()); }
 	}
     #endregion
@@ -110,7 +110,7 @@ public abstract class LipSyncCore : MonoBehaviour
     public bool useMic = false;
     private static MicHandler mic_ = null;
 	private static MicHandler mic {
-		get { return mic_ ?? 
+		get { return mic_ ??
 			(mic_ = new GameObject("Mic Handler").AddComponent<MicHandler>()); }
 	}
     #endregion
@@ -130,7 +130,7 @@ public abstract class LipSyncCore : MonoBehaviour
     #region [ Event Listeners ]
     public delegate void TalkStartEventListener();
     public delegate void TalkUpdateEventListener(string vowel, float volume);
-    public delegate void TalkEndEventListener(); 
+    public delegate void TalkEndEventListener();
     public TalkStartEventListener  OnTalkStart  = () => {};
     public TalkUpdateEventListener OnTalkUpdate = (string vowel, float volume) => {};
     public TalkEndEventListener    OnTalkEnd    = () => {};
@@ -600,11 +600,11 @@ public abstract class LipSyncCore : MonoBehaviour
         float diffO = Mathf.Pow(f1 - oCenterF1, 2.0f) + Mathf.Pow(f2 - oCenterF2, 2.0f);
         float minDiff = Mathf.Min(new float[] { diffA, diffI, diffU, diffE, diffO });
 
-        if      (diffA == minDiff) { return morphNames[0]; } 
-        else if (diffI == minDiff) { return morphNames[1]; } 
+        if      (diffA == minDiff) { return morphNames[0]; }
+        else if (diffI == minDiff) { return morphNames[1]; }
         else if (diffU == minDiff) { return morphNames[2]; }
-        else if (diffE == minDiff) { return morphNames[3]; } 
-        else if (diffO == minDiff) { return morphNames[4]; } 
+        else if (diffE == minDiff) { return morphNames[3]; }
+        else if (diffO == minDiff) { return morphNames[4]; }
         else                       { return "";            }
     }
 
@@ -626,7 +626,7 @@ public abstract class LipSyncCore : MonoBehaviour
     static private void Log(string msg)
     {
         Debug.Log(msg);
-    } 
+    }
 
     #endregion
 }

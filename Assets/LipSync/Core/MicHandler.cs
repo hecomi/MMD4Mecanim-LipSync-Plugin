@@ -2,12 +2,15 @@
 using System.Collections;
 
 [RequireComponent (typeof (AudioSource))]
-public class MicHandler : MonoBehaviour {
+public class MicHandler : MonoBehaviour 
+{
 	private int  sampleCount_ = 1024;
 	private int  minFreq_;
 	private int  maxFreq_;
 	private bool initialized_ = false;
 	private bool recording_   = false;
+	private float[] data_;
+	private int lastFrameCount_ = -1;
 
 	public bool isReady {
 		get { return initialized_; }
@@ -45,6 +48,7 @@ public class MicHandler : MonoBehaviour {
 	public void Initialize(int sampleCount = 1024)
 	{
 		sampleCount_ = sampleCount;
+		data_ = new float[sampleCount];
 
 		// Check if microphone exists
 		if (Microphone.devices.Length <= 0) {
@@ -82,8 +86,10 @@ public class MicHandler : MonoBehaviour {
 
 	public float[] GetData()
 	{
-		var data = new float[sampleCount_];
-		audio.GetOutputData(data, 0);
-		return data;
+		if (lastFrameCount_ != Time.frameCount) {
+			lastFrameCount_ = Time.frameCount;
+			audio.GetOutputData(data_, 0);
+		}
+		return data_;
 	}
 }

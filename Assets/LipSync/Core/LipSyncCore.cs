@@ -1,11 +1,11 @@
-﻿#define USE_PRO_FUNCTION 
+﻿//#define USE_PRO_FUNCTION 
 //#define OUTPUT_DEBUG_LOG
 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LipSyncCore : MonoBehaviour
+public abstract class LipSyncCore : MonoBehaviour
 {
     #region [ Constants ]
     public enum Vowel { A, I, U, E, O }
@@ -18,7 +18,6 @@ public class LipSyncCore : MonoBehaviour
 
     #region [ Playing Position ]
     public GameObject playingPosition;
-    private bool isPlayingPositionSet_ = false;
     #endregion
 
     #region [ Target Audio and Word ]
@@ -100,12 +99,20 @@ public class LipSyncCore : MonoBehaviour
     #endregion
 
     #region [ OpenJTalk ]
-    static private OpenJTalkHandler OpenJTalk;
+    private static OpenJTalkHandler openjtalk_ = null;
+    private static OpenJTalkHandler openjtalk {
+		get { return openjtalk_ ?? 
+			(openjtalk_ = new GameObject("Open JTalk Handler").AddComponent<OpenJTalkHandler>()); }
+	}
     #endregion
 
     #region [ Microphone ]
     public bool useMic = false;
-    private MicHandler mic_;
+    private static MicHandler mic_ = null;
+	private static MicHandler mic {
+		get { return mic_ ?? 
+			(mic_ = new GameObject("Mic Handler").AddComponent<MicHandler>()); }
+	}
     #endregion
 
     #region [ GUI Text for showing the result ]
@@ -114,6 +121,10 @@ public class LipSyncCore : MonoBehaviour
 
     #region [ Debug ]
     private string log_ = "";
+    #endregion
+
+    #region [ Abstract Members ]
+    protected abstract void Initialize();
     #endregion
 
     #region [ Event Listeners ]
@@ -131,31 +142,22 @@ public class LipSyncCore : MonoBehaviour
         // Add audio source
         if (playingPosition) {
             audio_ = playingPosition.AddComponent<AudioSource>();
-#if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
-            var passThrough = playingPosition.AddComponent<AudioFilterReadPassThrough>();
-            passThrough.AudioFilterRead += OnAudioFilterReadImpl;
-            isPlayingPositionSet_ = true;
-#endif
         } else {
             audio_ = gameObject.AddComponent<AudioSource>();
         }
 
-        // Create OpenJTalkHandler object
-        var ojt = new GameObject();
-        ojt.name = "OpenJTalk Handler";
-        OpenJTalk = ojt.AddComponent<OpenJTalkHandler>();
+		// Add OpneJTalk handler
+		openjtalk_ = openjtalk;
 
-        // Add MicHandler component
-        mic_ = gameObject.AddComponent<MicHandler>();
-        mic_.Initialize(sampleNum);
+        // Add MicHandler handler
+		if (!mic.isReady) {
+        	mic.Initialize(sampleNum);
+		}
 
+        // Initialize in subclass
         Initialize();
     }
 
-    protected virtual void Initialize()
-    {
-        // Implemented by sub class       
-    }
 
     void Update()
     {
@@ -165,17 +167,17 @@ public class LipSyncCore : MonoBehaviour
         }
 
         if (useMic) {
-            if (!mic_.isRecording) {
-                mic_.Record();
+            if (!mic.isRecording) {
+                mic.Record();
             }
-            df_ = mic_.df;
-            var micData = mic_.GetData();
+            df_ = mic.df;
+            var micData = mic.GetData();
             var vowel = GetVowel(micData);
             var volume = GetVolume(micData);
             OnTalkUpdate(vowel, volume);
         } else {
-            if (mic_.isRecording) {
-                mic_.Stop();
+            if (mic.isRecording) {
+                mic.Stop();
             }
         }
 
@@ -228,7 +230,7 @@ public class LipSyncCore : MonoBehaviour
             return;
         }
 
-        OpenJTalk.CreateWavFromWord(word, (err, wavPath) => {
+        openjtalk.CreateWavFromWord(word, (err, wavPath) => {
             if (err != "") {
                 Debug.LogError(err);
                 return;
@@ -376,7 +378,7 @@ public class LipSyncCore : MonoBehaviour
 
 
 #if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
-    void OnAudioFilterReadImpl(float[] data, int channels)
+    void OnAudioFilterRead(float[] data, int channels)
     {
         if (!isTalking_) return;
 
@@ -405,16 +407,6 @@ public class LipSyncCore : MonoBehaviour
 
             Log("finish");
             isTalking_ = false;
-        }
-    }
-
-
-    void OnAudioFilterRead(float[] data, int channels)
-    {
-        // NOTE: If playingPosition is set, OnAudioFilterRead in AudioFilterReadPassThrough 
-        // will be called instead of this.
-        if (!isPlayingPositionSet_) {
-            OnAudioFilterReadImpl(data, channels);
         }
     }
 #else

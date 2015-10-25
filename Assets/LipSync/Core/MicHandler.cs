@@ -2,8 +2,9 @@
 using System.Collections;
 
 [RequireComponent (typeof (AudioSource))]
-public class MicHandler : MonoBehaviour 
+public class MicHandler : MonoBehaviour
 {
+	private AudioSource source_;
 	private int  sampleCount_ = 1024;
 	private int  minFreq_;
 	private int  maxFreq_;
@@ -21,28 +22,33 @@ public class MicHandler : MonoBehaviour
 	}
 
 	public float df {
-		get { return audio.clip ?
-			audio.clip.frequency / sampleCount_ : 0.0f; }
+		get { return source_.clip ?
+			source_.clip.frequency / sampleCount_ : 0.0f; }
 	}
 
 	public AudioClip clip {
-		get { return audio.clip; }
+		get { return source_.clip; }
+	}
+
+	void Awake()
+	{
+		source_ = GetComponent<AudioSource>();
 	}
 
 	void Update()
 	{
-		if (!audio.isPlaying && initialized_ && recording_) {
-			audio.clip = Microphone.Start(null, false, 10, maxFreq_);
-			audio.mute = true;
+		if (!source_.isPlaying && initialized_ && recording_) {
+			source_.clip = Microphone.Start(null, false, 10, maxFreq_);
+			source_.mute = true;
 			while (Microphone.GetPosition(null) <= 0) {}
-			audio.Play();
+			source_.Play();
 		}
 	}
 
 	void OnApplicationPause()
 	{
-		audio.Stop();
-		Destroy(audio.clip);
+		source_.Stop();
+		Destroy(source_.clip);
 	}
 
 	public void Initialize(int sampleCount = 1024)
@@ -79,8 +85,8 @@ public class MicHandler : MonoBehaviour
 
 	public void Stop()
 	{
-		audio.Stop();
-		Destroy(audio.clip);
+		source_.Stop();
+		Destroy(source_.clip);
 		recording_ = false;
 	}
 
@@ -88,7 +94,7 @@ public class MicHandler : MonoBehaviour
 	{
 		if (lastFrameCount_ != Time.frameCount) {
 			lastFrameCount_ = Time.frameCount;
-			audio.GetOutputData(data_, 0);
+			source_.GetOutputData(data_, 0);
 		}
 		return data_;
 	}

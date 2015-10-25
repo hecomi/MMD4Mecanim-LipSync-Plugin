@@ -79,7 +79,7 @@ public abstract class LipSyncCore : MonoBehaviour
 	private Queue<int> lengths_ = new Queue<int>();
 	public float minVolume = 1e-5f;
 	public float normalizedVolume = 1e-4f;
-	public float delayTime = 0.18f;
+	public float delayTime = 0.1f;
 	private int delayCnt_ = 0;
 	#endregion
 

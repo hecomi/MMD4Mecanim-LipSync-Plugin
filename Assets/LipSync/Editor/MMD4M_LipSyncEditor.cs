@@ -8,9 +8,9 @@ public sealed class MMD4M_LipSyncEditor : LipSyncCoreEditor
 	private bool morphNamesFoldOut_   = false;
 
 
-	UnityChanLipSync lipSync
+	MMD4M_LipSync lipSync
 	{
-		get { return target as UnityChanLipSync; }
+		get { return target as MMD4M_LipSync; }
 	}
 
 

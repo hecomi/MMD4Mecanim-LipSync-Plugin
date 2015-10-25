@@ -17,7 +17,7 @@ public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 	public override void OnInspectorGUI()
 	{
 		EditorGUILayout.HelpBox(
-			"ユニティちゃんの音声を利用する際は必ず UCL をご確認下さい。 (http://unity-chan.com/download/guideline.html)",
+			"ユニティちゃんのモデルまたは音声を利用する際は必ず UCL をご確認下さい。 (http://unity-chan.com/download/guideline.html)",
 			MessageType.None);
 
 		DrawLipSyncCoreGUI();

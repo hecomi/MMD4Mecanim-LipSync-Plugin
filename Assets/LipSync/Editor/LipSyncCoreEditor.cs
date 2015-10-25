@@ -4,9 +4,9 @@ using UnityEditor;
 public abstract class LipSyncCoreEditor : Editor
 {
 	#region [ Fold Out Flags ]
-	private bool micFoldOut_		  = true;
-	private bool playFoldOut_		 = true;
-	private bool lpcFoldOut_		  = true;
+	private bool micFoldOut_          = true;
+	private bool playFoldOut_         = true;
+	private bool lpcFoldOut_          = true;
 	private bool lpcVowelFreqFoldOut_ = true;
 	private bool calibrationFoldOut_  = true;
 	private bool otherParamsFoldOut_  = true;
@@ -64,7 +64,7 @@ public abstract class LipSyncCoreEditor : Editor
 			// --------------------------------------------------------------------------------
 			var is3dSound = EditorGUILayout.Toggle("3D Sound", lipSync.is3dSound);
 			if (is3dSound != lipSync.is3dSound) lipSync.is3dSound = is3dSound;
-			if (lipSync.is3dSound && LipSyncCore.isUseProFunction) {
+			if (lipSync.is3dSound) {
 				EditorGUI.indentLevel++;
 				EditorGUILayout.HelpBox(
 					"※ Audio Clip については各々の 3D Sound 設定が優先されます",

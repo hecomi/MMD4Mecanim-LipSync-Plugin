@@ -1,7 +1,4 @@
-﻿#define USE_PRO_FUNCTION
-//#define OUTPUT_DEBUG_LOG
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,11 +6,6 @@ public abstract class LipSyncCore : MonoBehaviour
 {
 	#region [ Constants ]
 	public enum Vowel { A, I, U, E, O }
-	#if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
-	public const bool isUseProFunction = true;
-	#else
-	public const bool isUseProFunction = false;
-	#endif
 	#endregion
 
 	#region [ Playing Position ]
@@ -319,13 +311,8 @@ public abstract class LipSyncCore : MonoBehaviour
 		isTalking_ = true;
 		Clear();
 
-#if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
 		position_ = 0;
 		playClip_ = clip;
-#else
-		playClip_ = AudioClip.Create("tmp", samples_, clip.channels, clip.frequency,
-			is3dSound, true, OnAudioRead, OnAudioSetPosition);
-#endif
 		audio_.clip = playClip_;
 		audio_.Play();
 	}
@@ -377,7 +364,6 @@ public abstract class LipSyncCore : MonoBehaviour
 	}
 
 
-#if (UNITY_PRO_LICENSE && USE_PRO_FUNCTION)
 	void OnAudioFilterRead(float[] data, int channels)
 	{
 		if (!isTalking_) return;
@@ -409,56 +395,6 @@ public abstract class LipSyncCore : MonoBehaviour
 			isTalking_ = false;
 		}
 	}
-#else
-	void OnAudioRead(float[] data)
-	{
-		// Copy raw data into playing data
-		System.Array.Copy(rawData_, position_, data, 0, data.Length);
-
-		// Analyze the data and enqueue it
-		// NOTE: enqueued data will be used in FixedUpdate.
-		var input = new float[sampleNum];
-		int n = 0;
-		for (int i = 0; i < data.Length; ++i) {
-			++n;
-			if (n == sampleNum) {
-				AddVolumeData(input);
-				AddVowelData(input);
-				lengths_.Enqueue(n);
-				input = new float[sampleNum];
-				n = 0;
-			}
-			input[n] = rawData_[position_];
-			++position_;
-		}
-		if (n != 0) {
-			AddVolumeData(input);
-			AddVowelData(input);
-			lengths_.Enqueue(n);
-		}
-
-		// End
-		if (position_ >= samples_) {
-			// fade out voice
-			for (int i = 0; i < data.Length; ++i) {
-				data[i] *= (float) (data.Length - i) / data.Length;
-			}
-
-			Log("finish");
-			isTalking_ = false;
-		}
-	}
-
-
-	void OnAudioSetPosition(int newPosition)
-	{
-		position_ = newPosition;
-
-		// calling OnAudioSetPosition will occur multiple times...
-		// So clear data here.
-		Clear();
-	}
-#endif
 
 
 	float GetVolume(float[] input)
@@ -621,6 +557,7 @@ public abstract class LipSyncCore : MonoBehaviour
 		string vowel = GetVowel(input);
 		vowels_.Enqueue(vowel);
 	}
+
 
 	[System.Diagnostics.Conditional("OUTPUT_DEBUG_LOG")]
 	static private void Log(string msg)

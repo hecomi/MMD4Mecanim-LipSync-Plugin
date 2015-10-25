@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[RequireComponent( typeof(UnityChanMorph) )]
+[RequireComponent( typeof(UnityChanMouseMorph) )]
 public class UnityChanLipSync : LipSyncCore
 {
     // Typical lpc parameter and formant frequencies for each vowel (for unitychan talking)

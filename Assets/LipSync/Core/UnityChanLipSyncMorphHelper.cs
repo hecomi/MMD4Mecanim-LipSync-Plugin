@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 using System.Linq;
 
-[RequireComponent (typeof(UnityChanMorph))]
+[RequireComponent (typeof(UnityChanMouseMorph))]
 public class UnityChanLipSyncMorphHelper : MonoBehaviour
 {
-    public string morphName   { get; set; }
-    public float  morphSpeed  { get; set; }
-	public float  morphWeight { get; set; }
+    public string morphName   = "";
+    public float  morphSpeed  = 1f;
+	public float  morphWeight = 0f;
 
 	private float morphStep {
 		get { return Time.deltaTime / morphSpeed; }
 	}
 
-	private UnityChanMorph.Morph morph_;
+	private UnityChanMouseMorph.Morph morph_;
 
 	void Start()
 	{
-		morph_ = GetComponent<UnityChanMorph>().morphs.First(morph => { 
-			return morph.name == morphName; 
+		morph_ = GetComponent<UnityChanMouseMorph>().morphs.First(morph => {
+			return morph.name == morphName;
 		});
 	}
 

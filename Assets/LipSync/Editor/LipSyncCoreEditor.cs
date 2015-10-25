@@ -368,7 +368,7 @@ public abstract class LipSyncCoreEditor : Editor
 				var mic = micHelper_.AddComponent<MicHandler>();
 				var data = new float[mic.clip.samples];
 				mic.clip.GetData(data, 0);
-				clip = AudioClip.Create(clipName, mic.clip.samples, 1, mic.clip.frequency, true, false);
+				clip = AudioClip.Create(clipName, mic.clip.samples, 1, mic.clip.frequency, false);
 				clip.SetData(data, 0);
 
 				// Destroy mic helper

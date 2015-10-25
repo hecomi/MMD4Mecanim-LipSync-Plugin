@@ -8,24 +8,24 @@ public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 	private bool morphNamesFoldOut_ = true;
 
 
-    UnityChanLipSync lipSync
-    {
-        get { return target as UnityChanLipSync; }
-    }
+	UnityChanLipSync lipSync
+	{
+		get { return target as UnityChanLipSync; }
+	}
 
 
 	public override void OnInspectorGUI()
 	{
-        EditorGUILayout.HelpBox(
-            "ユニティちゃんの音声を利用する際は必ず UCL をご確認下さい。 (http://unity-chan.com/download/guideline.html)", 
-            MessageType.None);
+		EditorGUILayout.HelpBox(
+			"ユニティちゃんの音声を利用する際は必ず UCL をご確認下さい。 (http://unity-chan.com/download/guideline.html)",
+			MessageType.None);
 
-        DrawLipSyncCoreGUI();
+		DrawLipSyncCoreGUI();
 	}
 
 
-    protected override void DrawMorphSettingGUI()
-    {
+	protected override void DrawMorphSettingGUI()
+	{
 		morphFoldOut_ = EditorGUILayout.Foldout(morphFoldOut_, "Morph Parameters");
 		if (morphFoldOut_) {
 			EditorGUI.indentLevel++;
@@ -45,9 +45,9 @@ public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 			float maxMorphWeight = EditorGUILayout.FloatField("Max Morph Weight", lipSync.maxMorphWeight);
 			if (maxMorphWeight != lipSync.maxMorphWeight) lipSync.maxMorphWeight = maxMorphWeight;
 
-            // Morph Weight Damping Rate
-            float morphDampingRate = EditorGUILayout.FloatField("Morph Damping Rate", lipSync.morphDampingRate);
-            if (morphDampingRate != lipSync.morphDampingRate) lipSync.morphDampingRate = morphDampingRate;
+			// Morph Weight Damping Rate
+			float morphDampingRate = EditorGUILayout.FloatField("Morph Damping Rate", lipSync.morphDampingRate);
+			if (morphDampingRate != lipSync.morphDampingRate) lipSync.morphDampingRate = morphDampingRate;
 
 			morphNamesFoldOut_ = EditorGUILayout.Foldout(morphNamesFoldOut_, "Morph Names for Each Vowel");
 			if (morphNamesFoldOut_) {
@@ -78,23 +78,23 @@ public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 
-    override protected void DrawSetLpcDefaultParamGUI()
-    {
-        if (GUILayout.Button("Use UnityChan's default parameters", EditorStyles.miniButton)) {
-            lipSync.lpcOrder  = UnityChanLipSync.unityChanLpcOrder;
-            lipSync.sampleNum = UnityChanLipSync.unityChanSampleNum;
-            lipSync.aCenterF1 = UnityChanLipSync.aCenterUnityChanF1;
-            lipSync.aCenterF2 = UnityChanLipSync.aCenterUnityChanF2;
-            lipSync.iCenterF1 = UnityChanLipSync.iCenterUnityChanF1;
-            lipSync.iCenterF2 = UnityChanLipSync.iCenterUnityChanF2;
-            lipSync.uCenterF1 = UnityChanLipSync.uCenterUnityChanF1;
-            lipSync.uCenterF2 = UnityChanLipSync.uCenterUnityChanF2;
-            lipSync.eCenterF1 = UnityChanLipSync.eCenterUnityChanF1;
-            lipSync.eCenterF2 = UnityChanLipSync.eCenterUnityChanF2;
-            lipSync.oCenterF1 = UnityChanLipSync.oCenterUnityChanF1;
-            lipSync.oCenterF2 = UnityChanLipSync.oCenterUnityChanF2;
-        }
-    }
+	override protected void DrawSetLpcDefaultParamGUI()
+	{
+		if (GUILayout.Button("Use UnityChan's default parameters", EditorStyles.miniButton)) {
+			lipSync.lpcOrder  = UnityChanLipSync.unityChanLpcOrder;
+			lipSync.sampleNum = UnityChanLipSync.unityChanSampleNum;
+			lipSync.aCenterF1 = UnityChanLipSync.aCenterUnityChanF1;
+			lipSync.aCenterF2 = UnityChanLipSync.aCenterUnityChanF2;
+			lipSync.iCenterF1 = UnityChanLipSync.iCenterUnityChanF1;
+			lipSync.iCenterF2 = UnityChanLipSync.iCenterUnityChanF2;
+			lipSync.uCenterF1 = UnityChanLipSync.uCenterUnityChanF1;
+			lipSync.uCenterF2 = UnityChanLipSync.uCenterUnityChanF2;
+			lipSync.eCenterF1 = UnityChanLipSync.eCenterUnityChanF1;
+			lipSync.eCenterF2 = UnityChanLipSync.eCenterUnityChanF2;
+			lipSync.oCenterF1 = UnityChanLipSync.oCenterUnityChanF1;
+			lipSync.oCenterF2 = UnityChanLipSync.oCenterUnityChanF2;
+		}
+	}
 }

@@ -4,9 +4,9 @@ using UnityEditor;
 public abstract class LipSyncCoreEditor : Editor
 {
 	#region [ Fold Out Flags ]
-	private bool micFoldOut_          = true;
-	private bool playFoldOut_         = true;
-	private bool lpcFoldOut_          = true;
+	private bool micFoldOut_		  = true;
+	private bool playFoldOut_		 = true;
+	private bool lpcFoldOut_		  = true;
 	private bool lpcVowelFreqFoldOut_ = true;
 	private bool calibrationFoldOut_  = true;
 	private bool otherParamsFoldOut_  = true;
@@ -16,33 +16,33 @@ public abstract class LipSyncCoreEditor : Editor
 	private GameObject micHelper_;
 	#endregion
 
-    #region [ Abstract Members ]
-    protected abstract void DrawMorphSettingGUI();
-    protected virtual void DrawSetLpcDefaultParamGUI()
-    {
-    }
-    #endregion
+	#region [ Abstract Members ]
+	protected abstract void DrawMorphSettingGUI();
+	protected virtual void DrawSetLpcDefaultParamGUI()
+	{
+	}
+	#endregion
 
-    #region [ Member Functions ]
-    LipSyncCore lipSync
-    {
-        get { return target as LipSyncCore; }
-    }
+	#region [ Member Functions ]
+	LipSyncCore lipSync
+	{
+		get { return target as LipSyncCore; }
+	}
 
 
 	protected void DrawLipSyncCoreGUI()
 	{
-        DrawMicGUI();
-        DrawPlayGUI();
-        DrawCalibrationGUI();
-        DrawLPCParamsGUI();
-        DrawMorphSettingGUI();
-        DrawOtherParamsGUI();
+		DrawMicGUI();
+		DrawPlayGUI();
+		DrawCalibrationGUI();
+		DrawLPCParamsGUI();
+		DrawMorphSettingGUI();
+		DrawOtherParamsGUI();
 	}
 
 
-    protected void DrawMicGUI()
-    {
+	protected void DrawMicGUI()
+	{
 		micFoldOut_ = EditorGUILayout.Foldout(micFoldOut_, "Microphone");
 		if (micFoldOut_) {
 			EditorGUI.indentLevel++;
@@ -51,29 +51,29 @@ public abstract class LipSyncCoreEditor : Editor
 			EditorGUILayout.Separator();
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 
 
-    protected void DrawPlayGUI()
-    {
-        playFoldOut_ = EditorGUILayout.Foldout(playFoldOut_, "Play Voice Sound");
+	protected void DrawPlayGUI()
+	{
+		playFoldOut_ = EditorGUILayout.Foldout(playFoldOut_, "Play Voice Sound");
 		if (playFoldOut_) {
 			EditorGUI.indentLevel++;
 
 			// 3D Sound setting
 			// --------------------------------------------------------------------------------
-            var is3dSound = EditorGUILayout.Toggle("3D Sound", lipSync.is3dSound);
-            if (is3dSound != lipSync.is3dSound) lipSync.is3dSound = is3dSound;
-		    if (lipSync.is3dSound && LipSyncCore.isUseProFunction) {
-                EditorGUI.indentLevel++;
-                EditorGUILayout.HelpBox(
-                    "※ Audio Clip については各々の 3D Sound 設定が優先されます",
-                    MessageType.None);
-                EditorGUI.indentLevel--;
-		    }
-            EditorGUILayout.Separator();
+			var is3dSound = EditorGUILayout.Toggle("3D Sound", lipSync.is3dSound);
+			if (is3dSound != lipSync.is3dSound) lipSync.is3dSound = is3dSound;
+			if (lipSync.is3dSound && LipSyncCore.isUseProFunction) {
+				EditorGUI.indentLevel++;
+				EditorGUILayout.HelpBox(
+					"※ Audio Clip については各々の 3D Sound 設定が優先されます",
+					MessageType.None);
+				EditorGUI.indentLevel--;
+			}
+			EditorGUILayout.Separator();
 
-		    // From word
+			// From word
 			// --------------------------------------------------------------------------------
 			// Label
 			EditorGUILayout.BeginHorizontal(); {
@@ -169,12 +169,12 @@ public abstract class LipSyncCoreEditor : Editor
 
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 
 
-    protected void DrawCalibrationGUI()
-    {
-        calibrationFoldOut_ = EditorGUILayout.Foldout(calibrationFoldOut_, "Callibration");
+	protected void DrawCalibrationGUI()
+	{
+		calibrationFoldOut_ = EditorGUILayout.Foldout(calibrationFoldOut_, "Callibration");
 		if (calibrationFoldOut_) {
 			EditorGUI.indentLevel++;
 
@@ -231,11 +231,11 @@ public abstract class LipSyncCoreEditor : Editor
 
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 
 
-    protected void DrawLPCParamsGUI()
-    {
+	protected void DrawLPCParamsGUI()
+	{
 		lpcFoldOut_ = EditorGUILayout.Foldout(lpcFoldOut_, "LPC Parameters");
 		if (lpcFoldOut_) {
 			EditorGUI.indentLevel++;
@@ -304,7 +304,7 @@ public abstract class LipSyncCoreEditor : Editor
 						lipSync.oCenterF1 = LipSyncCore.oCenterMeiF1;
 						lipSync.oCenterF2 = LipSyncCore.oCenterMeiF2;
 					}
-                    DrawSetLpcDefaultParamGUI();
+					DrawSetLpcDefaultParamGUI();
 				} EditorGUILayout.EndHorizontal();
 				EditorGUILayout.Separator();
 
@@ -313,10 +313,10 @@ public abstract class LipSyncCoreEditor : Editor
 
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 
-    protected void DrawOtherParamsGUI()
-    {
+	protected void DrawOtherParamsGUI()
+	{
 		otherParamsFoldOut_ = EditorGUILayout.Foldout(otherParamsFoldOut_, "Other Parameters");
 		if (otherParamsFoldOut_) {
 			EditorGUI.indentLevel++;
@@ -339,7 +339,7 @@ public abstract class LipSyncCoreEditor : Editor
 
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 
 
 	void CreateRecordAndStopButton(ref AudioClip clip, string clipName)

@@ -8,42 +8,41 @@ public class MMD4M_LipSync : LipSyncCore
 		get { return morphs_; }
 	}
 
-    protected override void Initialize()
-    {
-        InitializeMorph();
-        OnTalkUpdate += UpdateMouth;
-    }
+	protected override void Initialize()
+	{
+		InitializeMorph();
+		OnTalkUpdate += UpdateMouth;
+	}
 
-    void InitializeMorph()
-    {
+	void InitializeMorph()
+	{
 		morphs_ = new MMD4MecanimMorphHelper[morphNames.Length];
 		for (int i = 0; i < morphNames.Length; ++i) {
 			morphs_[i] = gameObject.AddComponent<MMD4MecanimMorphHelper>();
 			morphs_[i].morphSpeed = morphSpeed;
 			morphs_[i].morphName  = morphNames[i];
 		}
-    }
+	}
 
-    void UpdateMouth(string vowel, float volume)
-    {
-        for (int i = 0; i < morphNames.Length; ++i) {
-            if (vowel == morphNames[i] && volume > minVolume) {
-                float weight = volume / normalizedVolume;
-                if (weight > maxMorphWeight) {
-                    weight = maxMorphWeight;
-                }
-                morphs_[i].morphWeight = weight;
-            } else {
-                morphs_[i].morphWeight *= morphDampingRate;
-            }
-        }
+	void UpdateMouth(string vowel, float volume)
+	{
+		for (int i = 0; i < morphNames.Length; ++i) {
+			if (vowel == morphNames[i] && volume > minVolume) {
+				float weight = volume / normalizedVolume;
+				if (weight > maxMorphWeight) {
+					weight = maxMorphWeight;
+				}
+				morphs_[i].morphWeight = weight;
+			} else {
+				morphs_[i].morphWeight *= morphDampingRate;
+			}
+		}
 
-        // show result
-        if (outputter != null) {
-            outputter.text = "";
-            for (int i = 0; i < morphNames.Length; ++i) {
-                outputter.text += "[" + morphNames[i] + "] " + morphs_[i].morphWeight + "\n";
-            }
-        }
-    }
+		if (outputter != null) {
+			outputter.text = "";
+			for (int i = 0; i < morphNames.Length; ++i) {
+				outputter.text += "[" + morphNames[i] + "] " + morphs_[i].morphWeight + "\n";
+			}
+		}
+	}
 }

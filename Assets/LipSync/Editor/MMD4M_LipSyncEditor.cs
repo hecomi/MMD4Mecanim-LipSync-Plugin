@@ -8,20 +8,20 @@ public sealed class MMD4M_LipSyncEditor : LipSyncCoreEditor
 	private bool morphNamesFoldOut_   = false;
 
 
-    UnityChanLipSync lipSync
-    {
-        get { return target as UnityChanLipSync; }
-    }
+	UnityChanLipSync lipSync
+	{
+		get { return target as UnityChanLipSync; }
+	}
 
 
 	public override void OnInspectorGUI()
 	{
-        DrawLipSyncCoreGUI();
+		DrawLipSyncCoreGUI();
 	}
 
 
-    protected override void DrawMorphSettingGUI()
-    {
+	protected override void DrawMorphSettingGUI()
+	{
 		morphFoldOut_ = EditorGUILayout.Foldout(morphFoldOut_, "Morph Parameters");
 		if (morphFoldOut_) {
 			EditorGUI.indentLevel++;
@@ -41,9 +41,9 @@ public sealed class MMD4M_LipSyncEditor : LipSyncCoreEditor
 			float maxMorphWeight = EditorGUILayout.FloatField("Max Morph Weight", lipSync.maxMorphWeight);
 			if (maxMorphWeight != lipSync.maxMorphWeight) lipSync.maxMorphWeight = maxMorphWeight;
 
-            // Morph Weight Damping Rate
-            float morphDampingRate = EditorGUILayout.FloatField("Morph Damping Rate", lipSync.morphDampingRate);
-            if (morphDampingRate != lipSync.morphDampingRate) lipSync.morphDampingRate = morphDampingRate;
+			// Morph Weight Damping Rate
+			float morphDampingRate = EditorGUILayout.FloatField("Morph Damping Rate", lipSync.morphDampingRate);
+			if (morphDampingRate != lipSync.morphDampingRate) lipSync.morphDampingRate = morphDampingRate;
 
 			morphNamesFoldOut_ = EditorGUILayout.Foldout(morphNamesFoldOut_, "Morph Names for Each Vowel");
 			if (morphNamesFoldOut_) {
@@ -74,5 +74,5 @@ public sealed class MMD4M_LipSyncEditor : LipSyncCoreEditor
 
 			EditorGUI.indentLevel--;
 		}
-    }
+	}
 }

@@ -4,7 +4,7 @@ MMD4Mecanim LipSync Plugin
 
 はじめに
 --------
-MMD4Mecanim を適用したモデルにアタッチすることで以下の機能を実現するプラグインです。
+MMD4Mecanim を適用したモデルまたはユニティちゃんモデルにアタッチすることで以下の機能を実現するプラグインです。
 - WAVE データの音声に同期したリップシンク
 - 入力した日本語をリップシンクしながら発話
 - マイク入力に合わせたリップシンク
@@ -47,4 +47,4 @@ MMD4Mecanim を適用したモデルにアタッチすることで以下の機�
 
 詳細
 ----
-その他詳細は Twitter:@hecomi へご質問いただくか、http://d.hatena.ne.jp/hecomi/ をご参照下さい。
+その他詳細は Twitter:@hecomi へご質問いただくか、http://tips.hecomi.com/ をご参照下さい。

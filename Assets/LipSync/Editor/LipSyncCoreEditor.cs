@@ -4,12 +4,13 @@ using UnityEditor;
 public abstract class LipSyncCoreEditor : Editor
 {
 	#region [ Fold Out Flags ]
-	private bool micFoldOut_          = true;
-	private bool playFoldOut_         = true;
-	private bool lpcFoldOut_          = true;
-	private bool lpcVowelFreqFoldOut_ = true;
-	private bool calibrationFoldOut_  = true;
-	private bool otherParamsFoldOut_  = true;
+	private bool micFoldOut_            = true;
+	private bool playFoldOut_           = true;
+	private bool lpcFoldOut_            = true;
+	private bool lpcVowelFreqFoldOut_   = true;
+	private bool calibrationFoldOut_    = true;
+	private bool otherParamsFoldOut_    = true;
+	private bool recognizedInfoFoldOut_ = true;
 	#endregion
 
 	#region [ Callibration for Vowel by Mic ]
@@ -21,6 +22,11 @@ public abstract class LipSyncCoreEditor : Editor
 	protected virtual void DrawSetLpcDefaultParamGUI()
 	{
 	}
+	#endregion
+
+	#region [ Recognized Info ]
+	private const int maxVowelsLength_ = 24;
+	protected string vowels_ = "";
 	#endregion
 
 	#region [ Member Functions ]
@@ -38,6 +44,7 @@ public abstract class LipSyncCoreEditor : Editor
 		DrawLPCParamsGUI();
 		DrawMorphSettingGUI();
 		DrawOtherParamsGUI();
+		DrawRecognizedInfoGUI();
 	}
 
 
@@ -337,6 +344,48 @@ public abstract class LipSyncCoreEditor : Editor
 			var outputter = EditorGUILayout.ObjectField("Result Outputter", lipSync.outputter, typeof(GUIText), true) as GUIText;
 			if (outputter != lipSync.outputter) lipSync.outputter = outputter;
 
+			EditorGUI.indentLevel--;
+		}
+	}
+
+
+	protected void DrawRecognizedInfoGUI()
+	{
+		recognizedInfoFoldOut_ = EditorGUILayout.Foldout(recognizedInfoFoldOut_, "Recognized Info");
+		if (recognizedInfoFoldOut_) {
+			EditorGUI.indentLevel++;
+
+			var vowel = lipSync.volume > lipSync.minVolume ? lipSync.vowel : "";
+			vowels_ += vowel;
+			if (vowels_.Length > maxVowelsLength_) {
+				vowels_ = vowels_.Substring(vowels_.Length - maxVowelsLength_);
+			}
+			EditorGUILayout.TextField("Recognized Vowels", vowels_);
+
+			EditorGUILayout.Space();
+			var area = GUILayoutUtility.GetRect(Screen.width, 10f);
+
+			var margin = 20;
+			Handles.DrawSolidRectangleWithOutline(new Vector3[] {
+					new Vector2(area.x + margin, area.y),
+					new Vector2(area.xMax,       area.y),
+					new Vector2(area.xMax,       area.yMax),
+					new Vector2(area.x + margin, area.yMax)
+					}, new Color(0,0,0,0), Color.white);
+
+			var ratio = Mathf.Min(lipSync.volume / lipSync.normalizedVolume, 1f);
+			var width = (int)((area.xMax - area.x - margin) * ratio);
+			var color =
+				(ratio < 0.1f) ? Color.red :
+				(ratio < 0.5f) ? Color.yellow :
+				Color.green;
+			Handles.DrawSolidRectangleWithOutline(new Vector3[] {
+					new Vector2(area.x + margin,          area.y),
+					new Vector2(area.x + margin + width,  area.y),
+					new Vector2(area.x + margin + width,  area.yMax),
+					new Vector2(area.x + margin,          area.yMax)
+					}, color, Color.clear);
+			EditorGUILayout.Space();
 			EditorGUI.indentLevel--;
 		}
 	}

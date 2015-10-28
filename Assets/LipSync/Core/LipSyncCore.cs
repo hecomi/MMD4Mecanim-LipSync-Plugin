@@ -59,6 +59,8 @@ public abstract class LipSyncCore : MonoBehaviour
 	private int samples_;
 	private float df_;
 	public bool is3dSound = true;
+	public float volume = 0f;
+	public string vowel = "";
 	#endregion
 
 	#region [ Callibration ]
@@ -164,8 +166,8 @@ public abstract class LipSyncCore : MonoBehaviour
 			}
 			df_ = mic.df;
 			var micData = mic.GetData();
-			var vowel = GetVowel(micData);
-			var volume = GetVolume(micData);
+			vowel = GetVowel(micData);
+			volume = GetVolume(micData);
 			OnTalkUpdate(vowel, volume);
 		} else {
 			if (mic.isRecording) {
@@ -203,8 +205,8 @@ public abstract class LipSyncCore : MonoBehaviour
 			nextUpdateTime_ = updateMouthTime_ * length / sampleNum;
 			totalDeltaTime_ -= nextUpdateTime_;
 
-			string vowel = vowels_.Dequeue();
-			float volume = volumes_.Dequeue();
+			vowel = vowels_.Dequeue();
+			volume = volumes_.Dequeue();
 			OnTalkUpdate(vowel, volume);
 		}
 	}

@@ -4,13 +4,18 @@ using UnityEditor;
 [CustomEditor(typeof(UnityChanLipSync))]
 public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 {
-	private bool morphFoldOut_      = true;
-	private bool morphNamesFoldOut_ = true;
-
-
 	UnityChanLipSync lipSync
 	{
 		get { return target as UnityChanLipSync; }
+	}
+
+	private bool morphFoldOut {
+		get { return lipSync.morphFoldOut;  }
+		set { lipSync.morphFoldOut = value; }
+	}
+	private bool morphNamesFoldOut {
+		get { return lipSync.morphNamesFoldOut;  }
+		set { lipSync.morphNamesFoldOut = value; }
 	}
 
 
@@ -26,8 +31,8 @@ public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 
 	protected override void DrawMorphSettingGUI()
 	{
-		morphFoldOut_ = EditorGUILayout.Foldout(morphFoldOut_, "Morph Parameters");
-		if (morphFoldOut_) {
+		morphFoldOut = EditorGUILayout.Foldout(morphFoldOut, "Morph Parameters");
+		if (morphFoldOut) {
 			EditorGUI.indentLevel++;
 
 			// Morph Speed
@@ -49,8 +54,8 @@ public sealed class UnityChanLipSyncEditor : LipSyncCoreEditor
 			float morphDampingRate = EditorGUILayout.FloatField("Morph Damping Rate", lipSync.morphDampingRate);
 			if (morphDampingRate != lipSync.morphDampingRate) lipSync.morphDampingRate = morphDampingRate;
 
-			morphNamesFoldOut_ = EditorGUILayout.Foldout(morphNamesFoldOut_, "Morph Names for Each Vowel");
-			if (morphNamesFoldOut_) {
+			morphNamesFoldOut = EditorGUILayout.Foldout(morphNamesFoldOut, "Morph Names for Each Vowel");
+			if (morphNamesFoldOut) {
 				EditorGUI.indentLevel++;
 
 				// a

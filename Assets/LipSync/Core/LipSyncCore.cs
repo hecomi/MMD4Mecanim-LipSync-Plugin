@@ -130,6 +130,18 @@ public abstract class LipSyncCore : MonoBehaviour
 	public TalkEndEventListener	OnTalkEnd	= () => {};
 	#endregion
 
+	#region [ Fold Out Flags ]
+	#if UNITY_EDITOR
+	[HideInInspector] public bool micFoldOut          = false;
+	[HideInInspector] public bool playFoldOut         = true;
+	[HideInInspector] public bool lpcFoldOut          = false;
+	[HideInInspector] public bool lpcVowelFreqFoldOut = false;
+	[HideInInspector] public bool calibrationFoldOut  = false;
+	[HideInInspector] public bool otherParamsFoldOut  = false;
+	[HideInInspector] public bool recogInfoFoldOut    = false;
+	#endif
+	#endregion
+
 	#region [ Member Functions ]
 	void Start()
 	{

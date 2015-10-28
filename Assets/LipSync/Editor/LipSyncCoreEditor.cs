@@ -3,16 +3,6 @@ using UnityEditor;
 
 public abstract class LipSyncCoreEditor : Editor
 {
-	#region [ Fold Out Flags ]
-	private bool micFoldOut_            = true;
-	private bool playFoldOut_           = true;
-	private bool lpcFoldOut_            = true;
-	private bool lpcVowelFreqFoldOut_   = true;
-	private bool calibrationFoldOut_    = true;
-	private bool otherParamsFoldOut_    = true;
-	private bool recognizedInfoFoldOut_ = true;
-	#endregion
-
 	#region [ Callibration for Vowel by Mic ]
 	private GameObject micHelper_;
 	#endregion
@@ -35,6 +25,37 @@ public abstract class LipSyncCoreEditor : Editor
 		get { return target as LipSyncCore; }
 	}
 
+	#region [ Fold Out Flags ]
+	private bool micFoldOut {
+		get { return lipSync.micFoldOut;  }
+		set { lipSync.micFoldOut = value; }
+	}
+	private bool playFoldOut {
+		get { return lipSync.playFoldOut;  }
+		set { lipSync.playFoldOut = value; }
+	}
+	private bool lpcFoldOut {
+		get { return lipSync.lpcFoldOut;  }
+		set { lipSync.lpcFoldOut = value; }
+	}
+	private bool lpcVowelFreqFoldOut {
+		get { return lipSync.lpcVowelFreqFoldOut;  }
+		set { lipSync.lpcVowelFreqFoldOut = value; }
+	}
+	private bool calibrationFoldOut {
+		get { return lipSync.calibrationFoldOut;  }
+		set { lipSync.calibrationFoldOut = value; }
+	}
+	private bool otherParamsFoldOut {
+		get { return lipSync.otherParamsFoldOut;  }
+		set { lipSync.otherParamsFoldOut = value; }
+	}
+	private bool recogInfoFoldOut {
+		get { return lipSync.recogInfoFoldOut;  }
+		set { lipSync.recogInfoFoldOut = value; }
+	}
+	#endregion
+
 
 	protected void DrawLipSyncCoreGUI()
 	{
@@ -50,8 +71,8 @@ public abstract class LipSyncCoreEditor : Editor
 
 	protected void DrawMicGUI()
 	{
-		micFoldOut_ = EditorGUILayout.Foldout(micFoldOut_, "Microphone");
-		if (micFoldOut_) {
+		micFoldOut = EditorGUILayout.Foldout(micFoldOut, "Microphone");
+		if (micFoldOut) {
 			EditorGUI.indentLevel++;
 			var useMic = EditorGUILayout.Toggle("Use Mic", lipSync.useMic);
 			if (useMic != lipSync.useMic) lipSync.useMic = useMic;
@@ -63,8 +84,8 @@ public abstract class LipSyncCoreEditor : Editor
 
 	protected void DrawPlayGUI()
 	{
-		playFoldOut_ = EditorGUILayout.Foldout(playFoldOut_, "Play Voice Sound");
-		if (playFoldOut_) {
+		playFoldOut = EditorGUILayout.Foldout(playFoldOut, "Play Voice Sound");
+		if (playFoldOut) {
 			EditorGUI.indentLevel++;
 
 			// 3D Sound setting
@@ -181,8 +202,8 @@ public abstract class LipSyncCoreEditor : Editor
 
 	protected void DrawCalibrationGUI()
 	{
-		calibrationFoldOut_ = EditorGUILayout.Foldout(calibrationFoldOut_, "Callibration");
-		if (calibrationFoldOut_) {
+		calibrationFoldOut = EditorGUILayout.Foldout(calibrationFoldOut, "Callibration");
+		if (calibrationFoldOut) {
 			EditorGUI.indentLevel++;
 
 			// Callibartion by each vowel data
@@ -243,8 +264,8 @@ public abstract class LipSyncCoreEditor : Editor
 
 	protected void DrawLPCParamsGUI()
 	{
-		lpcFoldOut_ = EditorGUILayout.Foldout(lpcFoldOut_, "LPC Parameters");
-		if (lpcFoldOut_) {
+		lpcFoldOut = EditorGUILayout.Foldout(lpcFoldOut, "LPC Parameters");
+		if (lpcFoldOut) {
 			EditorGUI.indentLevel++;
 
 			// LPC Order
@@ -256,8 +277,8 @@ public abstract class LipSyncCoreEditor : Editor
 			if (sampleNum != lipSync.sampleNum) lipSync.sampleNum = sampleNum;
 
 			// Typical frequencies for vowel
-			lpcVowelFreqFoldOut_ = EditorGUILayout.Foldout(lpcVowelFreqFoldOut_, "Typical Formant Frequencies for Each Vowel");
-			if (lpcVowelFreqFoldOut_) {
+			lpcVowelFreqFoldOut = EditorGUILayout.Foldout(lpcVowelFreqFoldOut, "Typical Formant Frequencies for Each Vowel");
+			if (lpcVowelFreqFoldOut) {
 				EditorGUI.indentLevel++;
 
 				// a
@@ -324,8 +345,8 @@ public abstract class LipSyncCoreEditor : Editor
 
 	protected void DrawOtherParamsGUI()
 	{
-		otherParamsFoldOut_ = EditorGUILayout.Foldout(otherParamsFoldOut_, "Other Parameters");
-		if (otherParamsFoldOut_) {
+		otherParamsFoldOut = EditorGUILayout.Foldout(otherParamsFoldOut, "Other Parameters");
+		if (otherParamsFoldOut) {
 			EditorGUI.indentLevel++;
 
 			// Minimum Volume
@@ -351,8 +372,8 @@ public abstract class LipSyncCoreEditor : Editor
 
 	protected void DrawRecognizedInfoGUI()
 	{
-		recognizedInfoFoldOut_ = EditorGUILayout.Foldout(recognizedInfoFoldOut_, "Recognized Info");
-		if (recognizedInfoFoldOut_) {
+		recogInfoFoldOut = EditorGUILayout.Foldout(recogInfoFoldOut, "Recognized Info");
+		if (recogInfoFoldOut) {
 			EditorGUI.indentLevel++;
 
 			var vowel = lipSync.volume > lipSync.minVolume ? lipSync.vowel : "";

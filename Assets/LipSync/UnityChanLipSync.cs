@@ -17,6 +17,11 @@ public class UnityChanLipSync : LipSyncCore
 	public const float oCenterUnityChanF1 = 885;
 	public const float oCenterUnityChanF2 = 1796;
 
+	#if UNITY_EDITOR
+	[HideInInspector] public bool morphFoldOut      = false;
+	[HideInInspector] public bool morphNamesFoldOut = true;
+	#endif
+
 	protected UnityChanLipSyncMorphHelper[] morphs_ = null;
 	public UnityChanLipSyncMorphHelper[] morphHelpers
 	{

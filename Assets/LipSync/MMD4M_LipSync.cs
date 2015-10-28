@@ -3,6 +3,11 @@ using System.Collections;
 
 public class MMD4M_LipSync : LipSyncCore
 {
+	#if UNITY_EDITOR
+	[HideInInspector] public bool morphFoldOut      = false;
+	[HideInInspector] public bool morphNamesFoldOut = true;
+	#endif
+
 	private MMD4MecanimMorphHelper[] morphs_ = null;
 	public  MMD4MecanimMorphHelper[] morphHelpers  {
 		get { return morphs_; }

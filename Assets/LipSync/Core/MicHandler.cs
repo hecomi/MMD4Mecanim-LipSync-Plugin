@@ -39,7 +39,7 @@ public class MicHandler : MonoBehaviour
 	{
 		if (!source_.isPlaying && initialized_ && recording_) {
 			source_.clip = Microphone.Start(null, false, 10, maxFreq_);
-			source_.mute = true;
+			// source_.mute = true; <-- this makes GetOutputData empty from Unity 5.2.
 			while (Microphone.GetPosition(null) <= 0) {}
 			source_.Play();
 		}
@@ -97,5 +97,10 @@ public class MicHandler : MonoBehaviour
 			source_.GetOutputData(data_, 0);
 		}
 		return data_;
+	}
+
+	void OnAudioFilterRead(float[] data, int channels)
+	{
+		System.Array.Clear(data, 0, data.Length);
 	}
 }

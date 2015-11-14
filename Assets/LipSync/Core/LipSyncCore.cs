@@ -143,7 +143,7 @@ public abstract class LipSyncCore : MonoBehaviour
 	#endregion
 
 	#region [ Member Functions ]
-	void Start()
+	void Awake()
 	{
 		// Add audio source
 		if (playingPosition) {

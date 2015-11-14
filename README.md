@@ -31,8 +31,10 @@ MMD4Mecanim を適用したモデルまたはユニティちゃんモデルに�
 
 利用方法
 --------
-- [http://tips.hecomi.com/entry/20131208/1386514048](http://tips.hecomi.com/entry/20131208/1386514048)
-- [http://tips.hecomi.com/entry/2014/07/21/125319](http://tips.hecomi.com/entry/2014/07/21/125319)
+- [Relase](https://github.com/hecomi/MMD4Mecanim-LipSync-Plugin/releases) より最新の *.uniypackage* をダウンロードしてプロジェクトにインポートして下さい。
+- 詳細は以下のエントリをご参照下さい。
+  - [http://tips.hecomi.com/entry/20131208/1386514048](http://tips.hecomi.com/entry/20131208/1386514048)
+  - [http://tips.hecomi.com/entry/2014/07/21/125319](http://tips.hecomi.com/entry/2014/07/21/125319)
 
 
 ライセンス

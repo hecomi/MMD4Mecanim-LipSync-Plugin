@@ -70,6 +70,9 @@ public abstract class LipSyncCore : MonoBehaviour
 	#region [ Flags ]
 	private bool isTalking_ = false, isPreTalking_ = false;
 	private bool isNewWavCreated_ = false;
+	public bool isTalking {
+		get { return isTalking_; }
+	}
 	#endregion
 
 	#region [ Lip Sync Information ]

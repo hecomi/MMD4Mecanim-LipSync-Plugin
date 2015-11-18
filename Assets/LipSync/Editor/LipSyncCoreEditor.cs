@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 public abstract class LipSyncCoreEditor : Editor
@@ -75,7 +75,9 @@ public abstract class LipSyncCoreEditor : Editor
 		if (micFoldOut) {
 			EditorGUI.indentLevel++;
 			var useMic = EditorGUILayout.Toggle("Use Mic", lipSync.useMic);
+			var micIndex = EditorGUILayout.IntField("Mic Index", lipSync.micIndex);
 			if (useMic != lipSync.useMic) lipSync.useMic = useMic;
+			if (micIndex != lipSync.micIndex) lipSync.micIndex = micIndex;
 			EditorGUILayout.Separator();
 			EditorGUI.indentLevel--;
 		}

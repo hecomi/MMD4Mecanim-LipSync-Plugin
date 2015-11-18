@@ -13,6 +13,8 @@ public class MicHandler : MonoBehaviour
 	private float[] data_;
 	private int lastFrameCount_ = -1;
 
+	private string micName_ = null;
+
 	public bool isReady {
 		get { return initialized_; }
 	}
@@ -38,9 +40,9 @@ public class MicHandler : MonoBehaviour
 	void Update()
 	{
 		if (!source_.isPlaying && initialized_ && recording_) {
-			source_.clip = Microphone.Start(null, false, 10, maxFreq_);
+			source_.clip = Microphone.Start(micName_, false, 10, maxFreq_);
 			// source_.mute = true; <-- this makes GetOutputData empty from Unity 5.2.
-			while (Microphone.GetPosition(null) <= 0) {}
+			while (Microphone.GetPosition(micName_) <= 0) {}
 			source_.Play();
 		}
 	}
@@ -51,7 +53,7 @@ public class MicHandler : MonoBehaviour
 		Destroy(source_.clip);
 	}
 
-	public void Initialize(int sampleCount = 1024)
+	public void Initialize(int sampleCount = 1024, int micIndex = 0)
 	{
 		sampleCount_ = sampleCount;
 		data_ = new float[sampleCount];
@@ -61,11 +63,18 @@ public class MicHandler : MonoBehaviour
 			Debug.LogWarning("Microphone not connected!");
 			return;
 		} else {
-			Debug.Log("Use:" + Microphone.devices[0]);
+			int maxIndex = Microphone.devices.Length - 1;
+			if(micIndex > maxIndex) {
+				Debug.LogWarning("MIC_INDEX:" + micIndex + " are changed to " + maxIndex + ".");
+				micIndex = maxIndex;
+			}
+			Debug.Log("Use:" + Microphone.devices[micIndex]);
+			micName_ = Microphone.devices[micIndex];
 		}
 
 		// Get default microphone min/max frequencies
-		Microphone.GetDeviceCaps(null, out minFreq_, out maxFreq_);
+		Microphone.GetDeviceCaps(micName_, out minFreq_, out maxFreq_);
+		Debug.Log("MIC_FREQ:" + minFreq_.ToString() + ", " + maxFreq_.ToString());
 		if (minFreq_ == 0 && maxFreq_ == 0) {
 			maxFreq_ = 44100;
 		} else if (maxFreq_ > 44100) {

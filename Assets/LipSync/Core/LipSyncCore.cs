@@ -105,8 +105,9 @@ public abstract class LipSyncCore : MonoBehaviour
 
 	#region [ Microphone ]
 	public bool useMic = false;
-	private static MicHandler mic_ = null;
-	private static MicHandler mic {
+	public int micIndex = 0;
+	private MicHandler mic_ = null;
+	private MicHandler mic {
 		get { return mic_ ??
 			(mic_ = new GameObject("Mic Handler").AddComponent<MicHandler>()); }
 	}
@@ -160,7 +161,7 @@ public abstract class LipSyncCore : MonoBehaviour
 
 		// Add MicHandler handler
 		if (!mic.isReady) {
-			mic.Initialize(sampleNum);
+			mic.Initialize(sampleNum, micIndex);
 		}
 
 		// Initialize in subclass

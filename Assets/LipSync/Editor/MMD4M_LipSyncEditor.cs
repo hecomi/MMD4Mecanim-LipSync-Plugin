@@ -17,7 +17,11 @@ public sealed class MMD4M_LipSyncEditor : LipSyncCoreEditor
 		get { return lipSync.morphNamesFoldOut;  }
 		set { lipSync.morphNamesFoldOut = value; }
 	}
-
+	private bool morphWeightsFoldOut
+	{
+		get { return lipSync.morphWeightsFoldOut; }
+		set { lipSync.morphWeightsFoldOut = value; }
+	}
 
 	public override void OnInspectorGUI()
 	{
@@ -73,6 +77,34 @@ public sealed class MMD4M_LipSyncEditor : LipSyncCoreEditor
 				// o
 				string oMorphName = EditorGUILayout.TextField("O", lipSync.morphNames[4]);
 				if (oMorphName != lipSync.morphNames[4]) lipSync.morphNames[4] = oMorphName;
+
+				EditorGUI.indentLevel--;
+			}
+
+			morphWeightsFoldOut = EditorGUILayout.Foldout(morphWeightsFoldOut, "Morph Weights for Each Vowel");
+			if (morphWeightsFoldOut)
+			{
+				EditorGUI.indentLevel++;
+
+				 // a
+				float aMorphWeight = EditorGUILayout.FloatField("A", lipSync.morphWeights[0]);
+				if (aMorphWeight != lipSync.morphWeights[0]) lipSync.morphWeights[0] = aMorphWeight;
+
+				// i
+				float iMorphWeight = EditorGUILayout.FloatField("I", lipSync.morphWeights[1]);
+				if (iMorphWeight != lipSync.morphWeights[1]) lipSync.morphWeights[1] = iMorphWeight;
+
+				// u
+				float uMorphWeight = EditorGUILayout.FloatField("U", lipSync.morphWeights[2]);
+				if (uMorphWeight != lipSync.morphWeights[2]) lipSync.morphWeights[2] = uMorphWeight;
+
+				// e
+				float eMorphWeight = EditorGUILayout.FloatField("E", lipSync.morphWeights[3]);
+				if (eMorphWeight != lipSync.morphWeights[3]) lipSync.morphWeights[3] = eMorphWeight;
+
+				// o
+				float oMorphWeight = EditorGUILayout.FloatField("O", lipSync.morphWeights[4]);
+				if (oMorphWeight != lipSync.morphWeights[4]) lipSync.morphWeights[4] = oMorphWeight;
 
 				EditorGUI.indentLevel--;
 			}

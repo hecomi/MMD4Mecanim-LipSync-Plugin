@@ -6,7 +6,8 @@ public class MMD4M_LipSync : LipSyncCore
 	#if UNITY_EDITOR
 	[HideInInspector] public bool morphFoldOut      = false;
 	[HideInInspector] public bool morphNamesFoldOut = true;
-	#endif
+	[HideInInspector] public bool morphWeightsFoldOut = true;
+#endif
 
 	private MMD4MecanimMorphHelper[] morphs_ = null;
 	public  MMD4MecanimMorphHelper[] morphHelpers  {
@@ -37,7 +38,7 @@ public class MMD4M_LipSync : LipSyncCore
 				if (weight > maxMorphWeight) {
 					weight = maxMorphWeight;
 				}
-				morphs_[i].morphWeight = weight;
+				morphs_[i].morphWeight = weight * morphWeights[i];
 			} else {
 				morphs_[i].morphWeight *= morphDampingRate;
 			}

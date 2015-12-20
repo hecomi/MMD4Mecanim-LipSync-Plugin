@@ -90,6 +90,7 @@ public abstract class LipSyncCore : MonoBehaviour
 
 	#region [ Morph Settings ]
 	public string[] morphNames = { "あ", "い", "う", "え", "お" };
+	public float[] morphWeights = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 	public float morphSpeed = 0.1f;
 	public float maxMorphWeight = 1.2f;
 	public float morphDampingRate = 0.0f;

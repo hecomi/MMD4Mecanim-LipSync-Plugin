@@ -255,7 +255,7 @@ public abstract class LipSyncCore : MonoBehaviour
 
 	IEnumerator LoadAudioClipFromPath(string path)
 	{
-		string filePath = "file://" + WWW.EscapeURL(path);
+		string filePath = "file:///" + WWW.EscapeURL(path);
 		var www = new WWW(filePath);
 		yield return www;
 
@@ -339,8 +339,8 @@ public abstract class LipSyncCore : MonoBehaviour
 
 	public void Play(string path)
 	{
-		if (path.IndexOf("file://") == 0) {
-			var filePath = path.Substring("file://".Length);
+		if (path.IndexOf("file:///") == 0) {
+			var filePath = path.Substring("file:///".Length);
 			StartCoroutine(LoadAudioClipFromPath(filePath));
 		} else {
 			try {

@@ -140,7 +140,7 @@ public abstract class LipSyncCoreEditor : Editor
 				string audioPath = EditorGUILayout.TextField("", lipSync.audioPath);
 				if (audioPath != lipSync.audioPath) lipSync.audioPath = audioPath;
 				if (GUILayout.Button("Select", EditorStyles.miniButtonLeft)) {
-					lipSync.audioPath = "file://" + EditorUtility.OpenFilePanel("Select .wav file", "", "wav");
+					lipSync.audioPath = "file:///" + EditorUtility.OpenFilePanel("Select .wav file", "", "wav");
 				}
 				if (GUILayout.Button("Play", EditorStyles.miniButtonRight)) {
 					if (Application.isPlaying) {

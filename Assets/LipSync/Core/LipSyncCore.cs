@@ -262,7 +262,7 @@ public abstract class LipSyncCore : MonoBehaviour
 		if (www.error != null) {
 			Debug.LogError(www.error);
 		}
-		if (www.audioClip) {
+		if (www.GetAudioClip()) {
 			Play(www.GetAudioClip(is3dSound, false));
 		}
 

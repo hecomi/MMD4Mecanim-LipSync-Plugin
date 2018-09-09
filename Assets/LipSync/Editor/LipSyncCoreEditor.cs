@@ -225,7 +225,7 @@ public abstract class LipSyncCoreEditor : Editor
 			EditorGUILayout.BeginHorizontal();
 				EditorGUILayout.LabelField("I", "", GUILayout.MinWidth(20), GUILayout.MaxWidth(20));
 				var iClip = EditorGUILayout.ObjectField("", lipSync.iClip, typeof(AudioClip), true) as AudioClip;
-				if (iClip != lipSync.aClip) lipSync.iClip = iClip;
+				if (iClip != lipSync.iClip) lipSync.iClip = iClip;
 				CreateRecordAndStopButton(ref lipSync.iClip, "Vowel I");
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.BeginHorizontal();

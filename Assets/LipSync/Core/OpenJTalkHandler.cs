@@ -2,13 +2,13 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Text;
 
 public class OpenJTalkHandler : MonoBehaviour {
 	private static bool Initialized = false;
 	private static bool Finalized   = false;
 
 	#region [ OpenJTalk-related File Paths ]
-	private static readonly string NkfBin            = "OpenJTalk/nkf.exe";
 	private static readonly string OpenJTalkBinWin   = "OpenJTalk/open_jtalk.exe";
 	private static readonly string OpenJTalkBinMac   = "OpenJTalk/open_jtalk";
 	private static readonly string OpenJTalkDicWin   = "OpenJTalk/dic/win";
@@ -18,16 +18,11 @@ public class OpenJTalkHandler : MonoBehaviour {
 	#endregion
 
 	#region [ Setters and Getters ]
-	private static string NkfBinPath_;
 	private static string OpenJTalkBinPath_;
 	private static string OpenJTalkDicPath_;
 	private static string OpenJTalkHTSVoicePath_;
 	private static string OpenJTalkTmpDirPath_;
-
-	public static string NkfBinPath {
-		get { return NkfBinPath_; }
-		private set { NkfBinPath_ = value; }
-	}
+	
 	public static string OpenJTalkBinPath {
 		get { return OpenJTalkBinPath_; }
 		private set { OpenJTalkBinPath_ = value; }
@@ -75,7 +70,6 @@ public class OpenJTalkHandler : MonoBehaviour {
 			}
 
 			// Set file path
-			NkfBinPath            = Path.Combine(Application.streamingAssetsPath, NkfBin);
 			OpenJTalkBinPath      = Path.Combine(Application.streamingAssetsPath, bin);
 			OpenJTalkDicPath      = Path.Combine(Application.streamingAssetsPath, dic);
 			OpenJTalkHTSVoicePath = Path.Combine(Application.streamingAssetsPath, OpenJTalkHTSVoice);
@@ -120,21 +114,13 @@ public class OpenJTalkHandler : MonoBehaviour {
 			FileName = System.Guid.NewGuid().ToString().ToLower();
 
 			// Output text file input to OpenJTalk
-			StreamWriter writer;
-			writer = new StreamWriter(OutputTxtPath, false);
-			writer.Write(word);
-			writer.Close();
-
-			// Change encoding from UTF-8 to SJIS on Windows
 			if (Application.platform == RuntimePlatform.WindowsEditor ||
 			    Application.platform == RuntimePlatform.WindowsPlayer) {
-				var nkf = new System.Diagnostics.Process();
-				nkf.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-				nkf.StartInfo.FileName = NkfBinPath;
-				nkf.StartInfo.Arguments = "-s --overwrite " + OutputTxtPath;
-				nkf.Start();
-				nkf.WaitForExit();
+				File.WriteAllText(OutputTxtPath, word, Encoding.GetEncoding("shift_jis"));
+			} else{
+				File.WriteAllText(OutputTxtPath, word);
 			}
+			
 
 			// Create child process and set OpneJTalk command
 			process_ = new System.Diagnostics.Process();
